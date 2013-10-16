@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<ndll name="cameramic" />
+	<dependency name="AVFoundation.framework" if="ios"/>
+	<java path="project/android" if="android" />
+	
+</project>
