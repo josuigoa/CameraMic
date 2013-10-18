@@ -9,9 +9,7 @@ Features:
  * Recorded audio playback.
 
 
-I know this is no a perfect way to do it, it would be great you help me doing it better.
-
-Camera taken photo appears in the middle of the screen, sorry, I prefer invest my time in the native side ;-)
+I know this is no a perfect way to do it, but at least it works for me! It would be great you help me doing it better.
 
 
 Android
