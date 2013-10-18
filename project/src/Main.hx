@@ -2,11 +2,13 @@ package ;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
+import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Matrix;
 import flash.Lib;
+import flash.text.TextField;
 import sys.FileSystem;
 
 /**
@@ -17,13 +19,16 @@ import sys.FileSystem;
 class Main extends Sprite 
 {
 	var inited:Bool;
-	private var _cameraBtn:Btn;
-	private var _recBtn:Btn;
-	private var _playBtn:Btn;
-	private var _stopBtn:Btn;
+	var _bg:Shape;
+	var _recordingAlert:Sprite;
+	var _cameraBtn:Btn;
+	var _recBtn:Btn;
+	var _playBtn:Btn;
+	var _stopBtn:Btn;
 
-	private var _isRecording:Bool;
+	var _isRecording:Bool;
 	var _audioPath:String;
+	var _photoBmp:Bitmap;
 	/* ENTRY POINT */
 	
 	function resize(e) 
@@ -38,27 +43,44 @@ class Main extends Sprite
 		inited = true;
 
 		// (your code here)
+		_bg = new Shape();
+		_bg.graphics.beginFill(0, .7);
+		_bg.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+		_bg.graphics.endFill();
+		
 		_cameraBtn = new Btn("CAMERA");
 		_cameraBtn.addEventListener(Btn.CLICK, onCameraClick);
-		_cameraBtn.x = (Lib.current.stage.stageWidth - _cameraBtn.width) * .5;
-		_cameraBtn.y = Lib.current.stage.stageHeight * .2;
+		_cameraBtn.x = (stage.stageWidth - _cameraBtn.width) * .5;
+		_cameraBtn.y = stage.stageHeight * .1;
 		
 		_isRecording = false;
 		_recBtn = new Btn("REC");
 		_recBtn.addEventListener(Btn.CLICK, onRecClick);
-		_recBtn.x = (Lib.current.stage.stageWidth - _recBtn.width) * .5;
-		_recBtn.y = Lib.current.stage.stageHeight * .4;
-		
-		_stopBtn = new Btn("STOP");
-		_stopBtn.addEventListener(Btn.CLICK, onStopClick);
-		_stopBtn.x = (Lib.current.stage.stageWidth - _stopBtn.width) * .5;
-		_stopBtn.y = Lib.current.stage.stageHeight * .6;
+		_recBtn.x = (stage.stageWidth - _recBtn.width) * .5;
+		_recBtn.y = _cameraBtn.y + _cameraBtn.height * 1.5;
 		
 		_playBtn = new Btn("PLAY");
 		_playBtn.addEventListener(Btn.CLICK, onPlayClick);
-		_playBtn.x = (Lib.current.stage.stageWidth - _playBtn.width) * .5;
-		_playBtn.y = Lib.current.stage.stageHeight * .8;
+		_playBtn.x = (stage.stageWidth - _playBtn.width) * .5;
+		_playBtn.y = _recBtn.y + _recBtn.height * 1.5;
 		_playBtn.alpha = .5;
+		
+		_recordingAlert = new Sprite();
+		var w = stage.width * .5;
+		var h = stage.height * .5;
+		_recordingAlert.graphics.beginFill(0x330000);
+		_recordingAlert.graphics.drawRect(0, 0, w, h);
+		_recordingAlert.graphics.endFill();
+		var txt = new TextField();
+		txt.text = "Recording...";
+		txt.x = (txt.width - _recordingAlert.width) * .5;
+		txt.y = (txt.height - _recordingAlert.height) * .5;
+		_recordingAlert.addChild(txt);
+		_stopBtn = new Btn("STOP");
+		_stopBtn.addEventListener(Btn.CLICK, onStopClick);
+		_stopBtn.x = (_stopBtn.width - _recordingAlert.width) * .5;
+		_stopBtn.y = h - _stopBtn.height - 5;
+		_recordingAlert.addChild(_stopBtn);
 		
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
@@ -67,22 +89,27 @@ class Main extends Sprite
 		// nme.Assets.getBitmapData("img/assetname.jpg");
 		this.addChild(_cameraBtn);
 		this.addChild(_recBtn);
-		this.addChild(_stopBtn);
+		//this.addChild(_stopBtn);
 		this.addChild(_playBtn);
 	}
 	
 	private function onCameraClick(e:Event):Void
 	{
-		CameraMic.getPhoto(this, cameraPhotoCallback);
+		CameraMic.takePhoto(this, cameraPhotoCallback);
 	}
 	
 	private function onRecClick(e:Event):Void 
 	{
+		addChild(_bg);
+		addChild(_recordingAlert);
+		
 		CameraMic.startRecordingAudio(this, recordAudioCallback);
 	}
 	
 	private function onStopClick(e:Event):Void 
 	{
+		removeChild(_bg);
+		removeChild(_recordingAlert);
 		CameraMic.stopRecordingAudio();
 	}
 	
@@ -97,14 +124,22 @@ class Main extends Sprite
 
 		if (input.width > 0)
 		{
-			var output:BitmapData = new BitmapData(Std.int(this.width * .95), Std.int(this.height * .7 * .9), true, 0x0000000);
-			var scaleFactorX:Float = output.width / input.width;
-			var scaleFactorY:Float = output.height / input.height;
+			var photoY = _playBtn.y + _playBtn.height + 5;
+			var maxH = stage.stageHeight - photoY - 5;
+			var s:Float;
+			if (input.width > input.height)
+				s = stage.stageWidth * .95 / input.width;
+			else
+				s = maxH / input.height;
+			
+			var output:BitmapData = new BitmapData(Std.int(input.width * s), Std.int(input.height * s), true, 0x0000000);
 			var matrix:Matrix = new Matrix();
-			matrix.scale(scaleFactorX, scaleFactorY);
+			matrix.scale(s, s);
 			output.draw(input, matrix, null, null, null, true);
-			var bitmap:Bitmap = new Bitmap(output);
-			addChild(bitmap);
+			_photoBmp = new Bitmap(output);
+			_photoBmp.x = (stage.stageWidth - _photoBmp.width) * .5;
+			_photoBmp.y = photoY;
+			addChild(_photoBmp);
 		}
 	}
 

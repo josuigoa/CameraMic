@@ -9,7 +9,7 @@ import neko.Lib;
 class CameraMic
 {
     private static var cameramic_getappdirectorypath : Dynamic;
-    private static var cameramic_getphoto : Dynamic;
+    private static var cameramic_takephoto : Dynamic;
     private static var cameramic_startrecordingaudio : Dynamic;
 	private static var cameramic_stoprecordingaudio : Dynamic;
 	private static var cameramic_playaudio : Dynamic;
@@ -20,16 +20,26 @@ class CameraMic
         return cameramic_getappdirectorypath();
     }
 
-    public static function getPhoto(haxeObject:Dynamic, callbackHandler:Dynamic->?Bool->Void):Void
+	/**
+	 * Function to push the native camera
+	 * @param	haxeObject Java will call the `cameraPhotoCallback` function in this object with the taken photo path
+	 * @param	callbackHandler Objective-C will call this function with the taken photo path
+	 */
+    public static function takePhoto(haxeObject:Dynamic, callbackHandler:Dynamic->?Bool->Void):Void
     {
         initCamera();
         #if android
-        cameramic_getphoto(haxeObject);
+        cameramic_takephoto(haxeObject);
         #elseif ios
-        cameramic_getphoto(callbackHandler);
+        cameramic_takephoto(callbackHandler);
         #end
     }
 
+	/**
+	 * Function to push the native microphone
+	 * @param	haxeObject Java will call the `recordAudioCallback` function in this object with the recorded audio path
+	 * @param	callbackHandler Objective-C will call this function with the recorded audio path
+	 */
     public static function startRecordingAudio(haxeObject:Dynamic, callbackHandler:Dynamic->?Bool->Void):Void
     {
         initMic();
@@ -40,6 +50,9 @@ class CameraMic
         #end
     }
 
+	/**
+	 * Stop recording native microphone
+	 */
     public static function stopRecordingAudio():Void
 	{
         initMic();
@@ -48,6 +61,10 @@ class CameraMic
         #end
 	}
 
+	/**
+	 * Play audio in native player 
+	 * @param	filePath The path of the audio file
+	 */
     public static function playAudio(filePath:String):Void
 	{
         initPlayer();
@@ -75,15 +92,13 @@ class CameraMic
 
     private static function initCamera()
     {
-        if (cameramic_getphoto != null)
+        if (cameramic_takephoto != null)
             return;
 
         #if android
-		trace("getphoto sortzen 0");
-        cameramic_getphoto = openfl.utils.JNI.createStaticMethod("org.haxe.nme.GameActivity", "getPhoto", "(Lorg/haxe/nme/HaxeObject;)V");
-		trace("getphoto sortzen 1");
+        cameramic_takephoto = openfl.utils.JNI.createStaticMethod("org.haxe.nme.GameActivity", "takePhoto", "(Lorg/haxe/nme/HaxeObject;)V");
         #elseif ios
-        cameramic_getphoto = Lib.load ("cameramic", "cameramic_getphoto", 1);
+        cameramic_takephoto = Lib.load ("cameramic", "cameramic_takephoto", 1);
         #end
     }
     
@@ -103,16 +118,13 @@ class CameraMic
 	
     private static function initPlayer()
     {
-        //if (cameramic_playaudio != null && cameramic_stopaudio != null)
         if (cameramic_playaudio != null)
             return;
 
         #if android
         cameramic_playaudio = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "playAudio", "(Ljava/lang/String;)V");
-        //cameramic_stopaudio = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "stopAudio", "()V");
         #elseif ios
         cameramic_playaudio = Lib.load ("cameramic", "cameramic_playaudio", 1);
-        //cameramic_stopaudio = Lib.load ("cameramic", "cameramic_stopaudio", 0);
         #end
     }
 }

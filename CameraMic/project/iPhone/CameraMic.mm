@@ -252,7 +252,7 @@ namespace cameramic
 		return [CameraMic getAppDirectoryPath];
 	}
 
-	void GetPhoto()
+	void TakePhoto()
 	{
 		_cameraMic = [[CameraMic alloc] initCamera];
 	}

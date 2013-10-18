@@ -5,7 +5,7 @@ namespace cameramic
 {
 	const char* GetAppDirectoryPath();
 
-	void GetPhoto();
+	void TakePhoto();
 	
 	void StartRecordingAudio();
 

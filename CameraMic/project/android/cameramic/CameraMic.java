@@ -21,7 +21,7 @@ class CameraMic extends Activity
 	
     public static String getAppDirectoryPath()
     {
-        return Environment.getExternalStorageDirectory() + "/p15";
+        return Environment.getExternalStorageDirectory() + "";
     }
 
 	public static void startRecordingAudio(HaxeObject eventHaxeHandler)

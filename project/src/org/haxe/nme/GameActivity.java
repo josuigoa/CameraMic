@@ -533,13 +533,13 @@ public class GameActivity extends Activity implements SensorEventListener
 	static private HaxeObject eventHaxeHandler;
 	static private Uri imageUri;
 
-    public static void getPhoto(HaxeObject eventHaxeHandler)
+    public static void takePhoto(HaxeObject eventHaxeHandler)
     {
-		Log.i("josu", "getPhoto: " + eventHaxeHandler.toString());
+		Log.i("josu", "takePhoto: " + eventHaxeHandler.toString());
 		
 		GameActivity.eventHaxeHandler = eventHaxeHandler;
 
-		File p15Directory = new File(Environment.getExternalStorageDirectory() + "/p15/images/");
+		File p15Directory = new File(Environment.getExternalStorageDirectory() + "/images/");
 		// have the object build the directory structure, if needed.
 		p15Directory.mkdirs();
 		// create a File object for the output file
@@ -584,27 +584,4 @@ public class GameActivity extends Activity implements SensorEventListener
 			GameActivity.eventHaxeHandler.call1("cameraPhotoCallback", imageUri.getPath());
 		}
 	}
-
-	/**
-     * This method is used to get real path of file from from uri
-     * 
-     * @param contentUri
-     * @return String
-     */
-    //----------------------------------------
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        try
-        {
-            String[] proj = {MediaStore.Images.Media.DATA};
-            android.database.Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        }
-        catch (Exception e)
-        {
-            return contentUri.getPath();
-        }
-    }
 }

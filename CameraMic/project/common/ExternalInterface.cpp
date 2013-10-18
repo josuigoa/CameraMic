@@ -22,16 +22,16 @@ static value cameramic_getappdirectorypath ()
 }
 DEFINE_PRIM (cameramic_getappdirectorypath, 0);
 
-static void cameramic_getphoto (value hxObject)
+static void cameramic_takephoto (value hxObject)
 {
 	handler = new AutoGCRoot(hxObject);
 	// message is a String, just get its value
     // const char* cStr = val_get_string(message);
     // call our Tweet function with it
     // and return true or false to haxe
-    GetPhoto();
+    TakePhoto();
 }
-DEFINE_PRIM (cameramic_getphoto, 1);
+DEFINE_PRIM (cameramic_takephoto, 1);
 
 static void cameramic_startrecordingaudio (value hxObject)
 {
