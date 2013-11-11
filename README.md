@@ -18,4 +18,4 @@ Android version works fine ~~hacking GameActivity for the camera (the GameActivi
 
 iOS
 ---
-In the iOS version, the camera view pushes and takes the photo. But when I get the BitmapData with Haxe, it loads with strange colours, I don't know if it the taken photo or the loading process. And it seems it records audio correctly, but I can´t play it back, so I can't know if it is ok.
+In the iOS version, the camera view pushes and takes the photo. Otherwise it seems it records audio correctly, but I can´t play it back, so I can't know if it is ok.
