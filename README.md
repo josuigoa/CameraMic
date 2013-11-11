@@ -14,7 +14,7 @@ I know this is no a perfect way to do it, but at least it works for me! It would
 
 Android
 -------
-Android version works fine hacking GameActivity for the camera (the GameActivity file is in the test project). When OpenFL 1.1 is released, I hope I will do it cleaner.
+Android version works fine ~~hacking GameActivity for the camera (the GameActivity file is in the test project). When OpenFL 1.1 is released, I hope I will do it cleaner.~~ using the new OpenFL 1.1 Extension class
 
 iOS
 ---
