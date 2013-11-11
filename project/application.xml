@@ -23,7 +23,6 @@
 	<assets path="assets/img" rename="img" />
 	
 	<template path="AndroidManifest.xml" if="android" />
-	<template path="src/org/haxe/nme/GameActivity.java" if="android" />
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	

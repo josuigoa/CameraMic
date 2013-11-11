@@ -96,7 +96,7 @@ class CameraMic
             return;
 
         #if android
-        cameramic_takephoto = openfl.utils.JNI.createStaticMethod("org.haxe.nme.GameActivity", "takePhoto", "(Lorg/haxe/nme/HaxeObject;)V");
+        cameramic_takephoto = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "takePhoto", "(Lorg/haxe/nme/HaxeObject;)V");
         #elseif ios
         cameramic_takephoto = Lib.load ("cameramic", "cameramic_takephoto", 1);
         #end

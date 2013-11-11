@@ -2,27 +2,89 @@ package cameramic;
 
 import org.haxe.nme.GameActivity;
 import org.haxe.nme.HaxeObject;
+import org.haxe.extension.Extension;
 import android.app.Activity;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.media.MediaRecorder;
 import android.media.MediaPlayer;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import java.io.IOException;
 import java.io.File;
 
-class CameraMic extends Activity
+class CameraMic extends Extension
 {
+	static private CameraMic instance;
+	
+	private static final int CAMERA_PIC_REQUEST = 1337;
+	static private Uri imageUri;
     static private String mFileName = null;
     static private MediaRecorder mRecorder = null;
     static private MediaPlayer mPlayer = null;
 	static private HaxeObject eventHaxeHandler;
+	static private boolean isRegistered;
 	
     public static String getAppDirectoryPath()
     {
         return Environment.getExternalStorageDirectory() + "";
     }
+
+    public static void takePhoto(HaxeObject eventHaxeHandler)
+    {
+		registerExtension();
+		Log.i("josu", "takePhoto: " + eventHaxeHandler.toString());
+		
+		CameraMic.eventHaxeHandler = eventHaxeHandler;
+		
+		File p15Directory = new File(Environment.getExternalStorageDirectory() + "/images/");
+		// have the object build the directory structure, if needed.
+		p15Directory.mkdirs();
+		// create a File object for the output file
+		File file = new File(p15Directory, (java.util.Calendar.getInstance().getTimeInMillis() + ".jpg"));
+		if(!file.exists())
+		{
+			try {
+				file.createNewFile();
+			} catch (java.io.IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			file.delete();
+			try {
+				file.createNewFile();
+			} catch (java.io.IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		imageUri = Uri.fromFile(file);
+		
+		Log.i("josu", "mCapturedImageURI: " + imageUri);
+		Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		
+		i.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+		GameActivity.getInstance().startActivityForResult(i, CAMERA_PIC_REQUEST);
+    }
+	
+	@Override
+	public boolean onActivityResult (int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PIC_REQUEST)
+		{
+			Log.i("josu", "IrudiPath, path: " + imageUri.getPath());
+			CameraMic.eventHaxeHandler.call1("cameraPhotoCallback", imageUri.getPath());
+		}
+		
+		return true;
+	}
 
 	public static void startRecordingAudio(HaxeObject eventHaxeHandler)
     {
@@ -77,5 +139,21 @@ class CameraMic extends Activity
 	{
 		mPlayer.release();
         mPlayer = null;
+	}
+	
+    public static void registerExtension()
+	{
+		if (isRegistered) return;
+		
+		GameActivity.getInstance().registerExtension(CameraMic.getInstance());
+		isRegistered = true;
+	}
+	
+	public static CameraMic getInstance()
+	{
+		if (instance == null)
+			instance = new CameraMic();
+		
+		return instance;
 	}
 }
