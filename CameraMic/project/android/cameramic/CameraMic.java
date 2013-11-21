@@ -25,10 +25,20 @@ class CameraMic extends Extension
     static private MediaPlayer mPlayer = null;
 	static private HaxeObject eventHaxeHandler;
 	static private boolean isRegistered;
+	static private String appFilesDirectory = "";
 	
-    public static String getAppDirectoryPath()
+    private static String getAppDirectory()
+	{
+		if(appFilesDirectory == "")
+			setAppDirectory("");
+		
+		return appFilesDirectory;
+	}
+	
+    public static String setAppDirectory(String subdir)
     {
-        return Environment.getExternalStorageDirectory() + "";
+		appFilesDirectory = Environment.getExternalStorageDirectory() + subdir;
+		return appFilesDirectory;
     }
 
     public static void takePhoto(HaxeObject eventHaxeHandler)
@@ -38,7 +48,7 @@ class CameraMic extends Extension
 		
 		CameraMic.eventHaxeHandler = eventHaxeHandler;
 		
-		File p15Directory = new File(Environment.getExternalStorageDirectory() + "/images/");
+		File p15Directory = new File(CameraMic.getAppDirectory() + "/images/");
 		// have the object build the directory structure, if needed.
 		p15Directory.mkdirs();
 		// create a File object for the output file
@@ -90,7 +100,7 @@ class CameraMic extends Extension
     {
 		CameraMic.eventHaxeHandler = eventHaxeHandler;
 		
-		File audioDirectory = new File(CameraMic.getAppDirectoryPath() + "/audios/");
+		File audioDirectory = new File(CameraMic.getAppDirectory() + "/audios/");
 		// have the object build the directory structure, if needed.
 		audioDirectory.mkdirs();
 

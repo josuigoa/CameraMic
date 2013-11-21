@@ -8,16 +8,22 @@ import neko.Lib;
 
 class CameraMic
 {
-    private static var cameramic_getappdirectorypath : Dynamic;
+	private static var appFilesDirectory:String = "";
+	
+    private static var cameramic_setappfilesdirectory : Dynamic;
     private static var cameramic_takephoto : Dynamic;
     private static var cameramic_startrecordingaudio : Dynamic;
 	private static var cameramic_stoprecordingaudio : Dynamic;
 	private static var cameramic_playaudio : Dynamic;
     
-    public static function getAppDirectoryPath():String
+    public static function setAppFilesDirectory(subdir:String):String
     {
         initAppDirectoryPath();
-        return cameramic_getappdirectorypath();
+		
+		if (appFilesDirectory == "")
+			appFilesDirectory = cameramic_setappfilesdirectory(subdir);
+		
+		return appFilesDirectory;
     }
 
 	/**
@@ -73,20 +79,15 @@ class CameraMic
         #end
 	}
 
-    // Some docs about method signatures and examples
-    // http://dev.kanngard.net/Permalinks/ID_20050509144235.html
-    // https://communities.ca.com/web/ca-wily-global-user-community/wiki/-/wiki/Main/JNI+Signatures;jsessionid=499BBB87921D31A3E2803B8ED3F2FDCB.usilap723?&#p_36
-    //
-    // Here String doSomething(String) translates to this
     private static function initAppDirectoryPath()
     {
-        if (cameramic_getappdirectorypath != null)
+        if (cameramic_setappfilesdirectory != null)
             return;
 
         #if android
-        cameramic_getappdirectorypath = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "getAppDirectoryPath", "()Ljava/lang/String;");
+        cameramic_setappfilesdirectory = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "setAppDirectory", "(Ljava/lang/String;)Ljava/lang/String;");
         #elseif ios
-        cameramic_getappdirectorypath = Lib.load ("cameramic", "cameramic_getappdirectorypath", 0);
+        cameramic_setappfilesdirectory = Lib.load ("cameramic", "cameramic_setappfilesdirectory", 1);
         #end
     }
 
