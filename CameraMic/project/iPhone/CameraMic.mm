@@ -11,19 +11,30 @@ extern "C" void cameramic_filename_callback(const char *filename);
 
 @interface CameraMic:NSObject<UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 {
-	CustomCamera *_customCamera;
+	CustomCamera* _customCamera;
 	NSString* _audioPath;
-	AVAudioRecorder *_audioRecorder;
-	AVAudioPlayer *_audioPlayer;
+	AVAudioRecorder* _audioRecorder;
+	AVAudioPlayer* _audioPlayer;
 }
 @end
 
 @implementation CameraMic
 
-+(const char*)getAppDirectoryPath
+static NSString* _appFilesDirectory;
++(const char*)setAppFilesDirectory:(NSString*)subdir
 {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    const char *ptr = [[paths objectAtIndex:0] cStringUsingEncoding:NSUTF8StringEncoding];
+	_appFilesDirectory = [[paths objectAtIndex:0] stringByAppendingString:subdir];
+    const char *ptr = [_appFilesDirectory cStringUsingEncoding:NSUTF8StringEncoding];
+    return ptr;
+}
+
++(const char*)getAppDirectory
+{
+	if(_appFilesDirectory == nil)
+		[CameraMic setAppFilesDirectory:@""];
+	
+    const char *ptr = [_appFilesDirectory cStringUsingEncoding:NSUTF8StringEncoding];
     return ptr;
 }
 
@@ -70,8 +81,8 @@ extern "C" void cameramic_filename_callback(const char *filename);
 
 	//obtaining saving path
     NSNumber *myDoubleNumber = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-    NSString *filename = [NSString stringWithFormat:@"%d.jpg", myDoubleNumber];
-	NSString *path = [[[NSString alloc] initWithUTF8String:[CameraMic getAppDirectoryPath]] autorelease];
+    NSString *filename = [NSString stringWithFormat:@"%d.jpg", [myDoubleNumber integerValue]];
+	NSString *path = [[[NSString alloc] initWithUTF8String:[CameraMic getAppDirectory]] autorelease];
     NSString *imagePath = [path stringByAppendingPathComponent:filename];
 
     NSLog(@"image path argazki hartu buelta: %@", imagePath);
@@ -104,8 +115,8 @@ extern "C" void cameramic_filename_callback(const char *filename);
 	{
 		//obtaining saving path
 	    NSNumber *myDoubleNumber = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
-	    NSString *filename = [NSString stringWithFormat:@"%d.caf", myDoubleNumber];
-	    NSString *path = [[[NSString alloc] initWithUTF8String:[CameraMic getAppDirectoryPath]] autorelease];
+	    NSString *filename = [NSString stringWithFormat:@"%d.caf", [myDoubleNumber integerValue]];
+	    NSString *path = [[[NSString alloc] initWithUTF8String:[CameraMic getAppDirectory]] autorelease];
 	    _audioPath = [[path stringByAppendingPathComponent:filename] retain];
 	    NSURL *soundFileURL = [NSURL fileURLWithPath:_audioPath];
 
@@ -247,9 +258,9 @@ namespace cameramic
 {
 	CameraMic *_cameraMic;
 
-	const char* GetAppDirectoryPath()
+	const char* SetAppFilesDirectory(const char* subdir)
 	{
-		return [CameraMic getAppDirectoryPath];
+		return [CameraMic setAppFilesDirectory:[NSString stringWithUTF8String:subdir]];
 	}
 
 	void TakePhoto()

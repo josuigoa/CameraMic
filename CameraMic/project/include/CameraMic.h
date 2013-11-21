@@ -3,7 +3,7 @@
 
 namespace cameramic
 {
-	const char* GetAppDirectoryPath();
+	const char* SetAppFilesDirectory(const char* subdir);
 
 	void TakePhoto();
 	

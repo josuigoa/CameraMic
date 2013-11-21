@@ -15,12 +15,12 @@ using namespace cameramic;
 
 AutoGCRoot *handler = 0;
 
-static value cameramic_getappdirectorypath ()
+static value cameramic_setappfilesdirectory (value inputValue)
 {
 	//return val_get_string(GetAppDirectoryPath());
-	return alloc_string(GetAppDirectoryPath());
+	return alloc_string(SetAppFilesDirectory(val_get_string(inputValue)));
 }
-DEFINE_PRIM (cameramic_getappdirectorypath, 0);
+DEFINE_PRIM (cameramic_setappfilesdirectory, 1);
 
 static void cameramic_takephoto (value hxObject)
 {
