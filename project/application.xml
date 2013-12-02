@@ -20,7 +20,6 @@
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
-	<assets path="assets/img" rename="img" />
 	
 	<template path="AndroidManifest.xml" if="android" />
 	<!-- optimize output
