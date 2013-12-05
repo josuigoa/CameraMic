@@ -38,6 +38,10 @@ class CameraMic extends Extension
     public static String setAppDirectory(String subdir)
     {
 		appFilesDirectory = Environment.getExternalStorageDirectory() + subdir;
+		File f = new File(appFilesDirectory);
+		if(!f.isDirectory())
+			f.mkdirs();
+		
 		return appFilesDirectory;
     }
 
