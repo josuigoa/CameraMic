@@ -9,8 +9,9 @@ import flash.events.MouseEvent;
 import flash.geom.Matrix;
 import flash.Lib;
 import flash.text.TextField;
+#if cpp
 import sys.FileSystem;
-
+#end
 /**
  * ...
  * @author Josu Igoa
@@ -102,8 +103,9 @@ class Main extends Sprite
 	{
 		addChild(_bg);
 		addChild(_recordingAlert);
-		
+		#if cpp
 		CameraMic.startRecordingAudio(this, recordAudioCallback);
+		#end
 	}
 	
 	private function onStopClick(e:Event):Void 
@@ -120,6 +122,7 @@ class Main extends Sprite
 	
 	public function cameraPhotoCallback(photoPath:String, ?remove):Void
 	{
+		#if cpp
 		var input:BitmapData = BitmapData.load(photoPath);
 
 		if (input.width > 0)
@@ -141,8 +144,12 @@ class Main extends Sprite
 			_photoBmp.y = photoY;
 			addChild(_photoBmp);
 		}
+		#else
+		trace("photoPath: " + photoPath);
+		#end
 	}
 
+	#if cpp
 	public function recordAudioCallback(audioPath:String, ?remove):Void
 	{
 		_audioPath = audioPath;
@@ -160,7 +167,7 @@ class Main extends Sprite
 				_playBtn.removeEventListener(Btn.CLICK, onPlayClick);
 		}
 	}
-
+	#end
 	/* SETUP */
 
 	public function new() 

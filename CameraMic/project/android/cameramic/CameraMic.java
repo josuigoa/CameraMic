@@ -1,7 +1,7 @@
 package cameramic;
 
-import org.haxe.nme.GameActivity;
-import org.haxe.nme.HaxeObject;
+import org.haxe.lime.GameActivity;
+import org.haxe.lime.HaxeObject;
 import org.haxe.extension.Extension;
 import android.app.Activity;
 import android.os.Environment;

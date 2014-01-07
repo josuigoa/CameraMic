@@ -43,7 +43,7 @@ class Btn extends Sprite
 		_background = new Sprite();
 		drawBackground(0xAA0000);
 		
-		_background.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
+		_background.addEventListener(MouseEvent.MOUSE_DOWN, onTouchBegin);
 		this.addChild(_background);
 		this.addChild(_textField);
 	}
@@ -56,11 +56,11 @@ class Btn extends Sprite
 		_background.cacheAsBitmap = true;
 	}
 	
-	private function onTouchBegin(e:TouchEvent):Void
+	private function onTouchBegin(e:Event):Void
 	{
 		drawBackground(0x00AA00);
-		_background.removeEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-		_background.addEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+		_background.removeEventListener(MouseEvent.MOUSE_DOWN, onTouchBegin);
+		_background.addEventListener(MouseEvent.MOUSE_UP, onTouchEnd);
 	}
 
 	public function setText(str:String):Void
@@ -68,11 +68,11 @@ class Btn extends Sprite
 		_textField.text = str;
 	}
 	
-	private function onTouchEnd(me:TouchEvent):Void 
+	private function onTouchEnd(me:Event):Void 
 	{
 		drawBackground(0xAA0000);
-		_background.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
-		_background.removeEventListener(TouchEvent.TOUCH_END, onTouchEnd);
+		_background.addEventListener(MouseEvent.MOUSE_DOWN, onTouchBegin);
+		_background.removeEventListener(MouseEvent.MOUSE_UP, onTouchEnd);
 		
 		if (this.hasEventListener(Btn.CLICK))
 			this.dispatchEvent(new Event(Btn.CLICK));
