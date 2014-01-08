@@ -68,7 +68,7 @@ class CameraMic
 		if (emaitza != 'errorea')
 			callbackHandler(emaitza);
 		*/
-		trace("takePhoto");
+		trace("takePhoto html5");
 		var emaitza:MozActivity = untyped __js__("new MozActivity( { name: 'pick', data: { type: ['image/png', 'image/jpg', 'image/jpeg'] }});");
 		emaitza.onsuccess = function() { callbackHandler(untyped __js__("this.result.blob")); };
 		emaitza.onerror = function() { untyped __js__("alert('Pick onerror funtzioan nago!');"); };

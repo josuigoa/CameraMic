@@ -44,6 +44,8 @@ class Main extends Sprite
 		inited = true;
 
 		// (your code here)
+		CameraMic.setAppFilesDirectory("/cameraMicTest");
+		
 		_bg = new Shape();
 		_bg.graphics.beginFill(0, .7);
 		_bg.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
