@@ -9,7 +9,7 @@ Features:
  * Recorded audio playback.
 
 
-I know this is no a perfect way to do it, but at least it works for me! It would be great you help me doing it better.
+There is not any error handling yet. I know this is no a perfect way to do it, but at least it works for me! It would be great you help me doing it better.
 
 
 Android
