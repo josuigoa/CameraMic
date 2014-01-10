@@ -19,3 +19,7 @@ Android version works fine ~~hacking GameActivity for the camera (the GameActivi
 iOS
 ---
 In the iOS version, the camera view pushes and takes the photo. Otherwise it seems it records audio correctly, but I can´t play it back, so I can't know if it is ok.
+
+License
+---
+This software is released under the GNU General Public License version 2 or any later version.
