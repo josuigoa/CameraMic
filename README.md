@@ -22,4 +22,4 @@ In the iOS version, the camera view pushes and takes the photo. Otherwise it see
 
 License
 ---
-This software is released under the GNU General Public License version 2 or any later version.
+This software is released under the MIT License
