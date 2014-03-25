@@ -9,6 +9,8 @@ import flash.events.MouseEvent;
 import flash.geom.Matrix;
 import flash.Lib;
 import flash.text.TextField;
+import flash.text.TextFormat;
+import flash.text.TextFieldAutoSize;
 #if cpp
 import sys.FileSystem;
 #end
@@ -69,21 +71,25 @@ class Main extends Sprite
 		_playBtn.alpha = .5;
 		
 		_recordingAlert = new Sprite();
-		var w = stage.width * .5;
-		var h = stage.height * .5;
+		var w = stage.stageWidth * .5;
+		var h = stage.stageHeight * .5;
 		_recordingAlert.graphics.beginFill(0x330000);
 		_recordingAlert.graphics.drawRect(0, 0, w, h);
 		_recordingAlert.graphics.endFill();
 		var txt = new TextField();
+		txt.autoSize = TextFieldAutoSize.LEFT;
+		txt.defaultTextFormat = new TextFormat(null, 20, 0xFFFFFF);
 		txt.text = "Recording...";
-		txt.x = (txt.width - _recordingAlert.width) * .5;
-		txt.y = (txt.height - _recordingAlert.height) * .5;
+		txt.x = (w - txt.width) * .5;
+		txt.y = (h - txt.height) * .5;
 		_recordingAlert.addChild(txt);
 		_stopBtn = new Btn("STOP");
 		_stopBtn.addEventListener(Btn.CLICK, onStopClick);
-		_stopBtn.x = (_stopBtn.width - _recordingAlert.width) * .5;
+		_stopBtn.x = (w - _stopBtn.width) * .5;
 		_stopBtn.y = h - _stopBtn.height - 5;
 		_recordingAlert.addChild(_stopBtn);
+		_recordingAlert.x = w - _recordingAlert.width * .5;
+		_recordingAlert.y = h - _recordingAlert.height * .5;
 		
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
@@ -103,7 +109,7 @@ class Main extends Sprite
 	
 	private function onRecClick(e:Event):Void 
 	{
-		addChild(_bg);
+		//addChild(_bg);
 		addChild(_recordingAlert);
 		#if cpp
 		CameraMic.startRecordingAudio(this, recordAudioCallback);
@@ -119,6 +125,7 @@ class Main extends Sprite
 	
 	private function onPlayClick(e:Event):Void 
 	{
+		trace("onPlayClick Haxe");
 		CameraMic.playAudio(_audioPath);
 	}
 	
@@ -156,7 +163,8 @@ class Main extends Sprite
 	{
 		_audioPath = audioPath;
 		
-		if (_audioPath != null && FileSystem.exists(_audioPath))
+		trace("recordAudioCallback " + _audioPath + " exists: " + FileSystem.exists(_audioPath));
+		if (_audioPath != null)// && FileSystem.exists(_audioPath))
 		{
 			_playBtn.alpha = 1;
 			if(!_playBtn.hasEventListener(Btn.CLICK))

@@ -30,7 +30,7 @@ class Btn extends Sprite
 		
 		_textField = new TextField();
 		_textField.autoSize = TextFieldAutoSize.LEFT;
-		_textField.defaultTextFormat = new TextFormat("arial", 20);
+		_textField.defaultTextFormat = new TextFormat(null, 20);
 		_textField.text = testuParam;
 		_textField.x = X_MARGIN;
 		_textField.y = Y_MARGIN;

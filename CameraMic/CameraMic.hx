@@ -107,6 +107,7 @@ class CameraMic
 	 */
     public static function playAudio(filePath:String):Void
 	{
+        trace("playAudio, filePath: " + filePath);
         initPlayer();
         #if mobile
         cameramic_playaudio(filePath);

@@ -10,7 +10,7 @@
 	
 	<window background="#FFFFFF" fps="60" />
 	<window width="800" height="480" unless="mobile || html5" />
-	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
+	<window orientation="portrait" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->
 	<source path="src" />
