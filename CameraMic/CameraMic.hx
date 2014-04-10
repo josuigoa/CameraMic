@@ -6,7 +6,7 @@ import cpp.Lib;
 import neko.Lib;
 #end
 
-#if html5
+#if firefoxos
 typedef MozActivity = {
 	var onsuccess:Void->Void;
 	var onerror:Void->Void;
@@ -25,6 +25,9 @@ class CameraMic
     
     public static function setAppFilesDirectory(subdir:String):String
     {
+        #if firefoxos
+        return "";    
+        #end
         initAppDirectoryPath();
 		
 		if (appFilesDirectory == "")
@@ -45,7 +48,7 @@ class CameraMic
         cameramic_takephoto(haxeObject);
         #elseif ios
         cameramic_takephoto(callbackHandler);
-		#elseif html5
+		#elseif firefoxos
 		/*
 		var emaitza = untyped __js__("var pick = new MozActivity( { name: 'pick', data: { type: ['image/png', 'image/jpg', 'image/jpeg'] }});
 						pick.onsuccess = function () {
@@ -68,7 +71,7 @@ class CameraMic
 		if (emaitza != 'errorea')
 			callbackHandler(emaitza);
 		*/
-		trace("takePhoto html5");
+		trace("takePhoto firefoxos");
 		var emaitza:MozActivity = untyped __js__("new MozActivity( { name: 'pick', data: { type: ['image/png', 'image/jpg', 'image/jpeg'] }});");
 		emaitza.onsuccess = function() { callbackHandler(untyped __js__("this.result.blob")); };
 		emaitza.onerror = function() { untyped __js__("alert('Pick onerror funtzioan nago!');"); };
@@ -123,6 +126,8 @@ class CameraMic
         cameramic_setappfilesdirectory = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "setAppDirectory", "(Ljava/lang/String;)Ljava/lang/String;");
         #elseif ios
         cameramic_setappfilesdirectory = Lib.load ("cameramic", "cameramic_setappfilesdirectory", 1);
+        #elseif firefoxos
+        
         #end
     }
 
@@ -148,7 +153,6 @@ class CameraMic
         cameramic_stoprecordingaudio = openfl.utils.JNI.createStaticMethod("cameramic.CameraMic", "stopRecordingAudio", "()V");
         #elseif ios
         cameramic_startrecordingaudio = Lib.load ("cameramic", "cameramic_startrecordingaudio", 1);
-        cameramic_stoprecordingaudio = Lib.load ("cameramic", "cameramic_stoprecordingaudio", 0);
         #end
     }
 	

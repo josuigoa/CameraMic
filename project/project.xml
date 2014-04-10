@@ -6,10 +6,10 @@
 	<meta title="CameraMic_test" package="test.josuigoa.cameramic" version="1.0.0" company="Josu Igoa" />
 	
 	<!-- output -->
-	<app main="Main" file="CameraMiciOS" path="bin" />
+	<app main="Main" file="CameraMicTest" path="bin" />
 	
 	<window background="#FFFFFF" fps="60" />
-	<window width="800" height="480" unless="mobile || html5" />
+	<window width="800" height="480" unless="mobile || firefoxos" />
 	<window orientation="portrait" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->
@@ -21,7 +21,7 @@
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
 	
-	<template path="AndroidManifest.xml" if="android" />
+	<template path="templates" if="android" />
 	<!-- optimize output
 	<haxeflag name="-dce full" /> -->
 	

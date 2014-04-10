@@ -131,9 +131,14 @@ class Main extends Sprite
 	
 	public function cameraPhotoCallback(photoPath:String, ?remove):Void
 	{
-		#if cpp
+        #if cpp
+         
+        //var input = BitmapData.loadFromBytes(flash.utils.ByteArray.readFile(photoPath));
+        trace("HX: " + photoPath + " exists: " + FileSystem.exists(photoPath));
 		var input:BitmapData = BitmapData.load(photoPath);
-
+		
+        trace("input.width " + input.width);
+        
 		if (input.width > 0)
 		{
 			var photoY = _playBtn.y + _playBtn.height + 5;

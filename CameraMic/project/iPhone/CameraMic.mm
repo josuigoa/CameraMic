@@ -24,9 +24,19 @@ extern "C" void cameramic_filename_callback(const char *filename);
 static NSString* _appFilesDirectory;
 +(const char*)setAppFilesDirectory:(NSString*)subdir
 {
+    /*
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	//_appFilesDirectory = [[paths objectAtIndex:0] stringByAppendingString:subdir];
 	_appFilesDirectory = [[paths lastObject] stringByAppendingString:subdir];
+    */
+    
+    _appFilesDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingString:subdir];
+    
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:_appFilesDirectory])
+        [[NSFileManager defaultManager] createDirectoryAtPath:_appFilesDirectory withIntermediateDirectories:NO attributes:nil error:&error];
+
+	
     const char *ptr = [_appFilesDirectory cStringUsingEncoding:NSUTF8StringEncoding];
     return ptr;
 }
@@ -100,6 +110,8 @@ static NSString* _appFilesDirectory;
     */
 
 	[UIImageJPEGRepresentation(image, 1.0) writeToFile:imagePath atomically:YES];
+    
+    NSLog(@"fitxategia existitzen da: %i", [[NSFileManager defaultManager] fileExistsAtPath:imagePath]);
 
     [_customCamera dismissModalViewControllerAnimated:YES];
     [_customCamera.view removeFromSuperview];
