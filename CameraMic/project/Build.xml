@@ -12,9 +12,10 @@
 		<compilerflag value="-Iinclude"/>
 		
 		<file name="common/ExternalInterface.cpp"/>
+		<file name="common/CameraMic.cpp"/>
 		
 	</files>
-
+	
 	<files id="iphone">
 		
 		<compilerflag value="-Iinclude"/>
@@ -25,8 +26,9 @@
 	</files>
 	
 	<set name="name_prefix" value="lib" if="iphone"/>
-	<set name="IOS_ARCH" value="-v7" if="HXCPP_ARMV7"/>
-	<set name="name_extra" value=".iphoneos${IOS_ARCH}" if="iphoneos"/>
+	<set name="ARM_ARCH" value="-v7" if="HXCPP_ARMV7"/>
+	<set name="name_extra" value="${ARM_ARCH}" if="android"/>
+	<set name="name_extra" value=".iphoneos${ARM_ARCH}" if="iphoneos"/>
 	<set name="name_extra" value=".iphonesim" if="iphonesim"/>
 	<set name="name_extra" value="-x86" if="simulator" unless="iphonesim" />
 	<set name="tool" value="exe" unless="iphone"/>
@@ -41,8 +43,7 @@
 		
 		<outdir name="../ndll/${BINDIR}"/>
 		<ext value=".ndll" unless="mobile"/>
-		<files id="common" unless="iphone"/>
-		<files id="iphone" if="iphone"/>
+		<files id="common"/>
 		
 	</target>
 	

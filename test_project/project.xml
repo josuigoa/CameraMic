@@ -21,8 +21,4 @@
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />
 	
-	<template path="templates" if="android" />
-	<!-- optimize output
-	<haxeflag name="-dce full" /> -->
-	
 </project>

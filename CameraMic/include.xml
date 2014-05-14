@@ -2,7 +2,11 @@
 <project>
 	
 	<ndll name="cameramic" />
+	
+	<!-- Use the following for an Android Java extension, not needed otherwise -->
+	
 	<dependency name="AVFoundation.framework" if="ios"/>
-	<java path="project/android" if="android" />
+	<dependency name="cameramic" path="dependencies/android" if="android" />
+	<android extension="org.haxe.extension.cameramic.CameraMic" />
 	
 </project>
