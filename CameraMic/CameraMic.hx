@@ -19,7 +19,7 @@ typedef MozActivity = {
 
 class CameraMic
 {
-	private static var appFilesDirectory:String = "";
+	@:isVar public static var appFilesDirectory(default, set):String = "";
 	
     private static var cameramic_setappfilesdirectory : Dynamic;
     private static var cameramic_takephoto : Dynamic;
@@ -27,7 +27,7 @@ class CameraMic
 	private static var cameramic_stoprecordingaudio : Dynamic;
 	private static var cameramic_playaudio : Dynamic;
     
-    public static function setAppFilesDirectory(subdir:String):String
+    public static function set_appFilesDirectory(subdir:String):String
     {
         initAppDirectoryPath();
 		

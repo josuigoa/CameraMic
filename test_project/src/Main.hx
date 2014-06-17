@@ -46,7 +46,7 @@ class Main extends Sprite
 		inited = true;
 
 		// (your code here)
-		CameraMic.setAppFilesDirectory("/cameraMicTest");
+		CameraMic.appFilesDirectory = "/cameraMicTest";
 		
 		_bg = new Shape();
 		_bg.graphics.beginFill(0, .7);
