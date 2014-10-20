@@ -19,23 +19,13 @@ typedef MozActivity = {
 
 class CameraMic
 {
-	@:isVar public static var appFilesDirectory(default, set):String = "";
+	@:isVar public static var appFilesDirectory(get, set):String = "";
 	
     private static var cameramic_setappfilesdirectory : Dynamic;
     private static var cameramic_takephoto : Dynamic;
     private static var cameramic_startrecordingaudio : Dynamic;
 	private static var cameramic_stoprecordingaudio : Dynamic;
 	private static var cameramic_playaudio : Dynamic;
-    
-    public static function set_appFilesDirectory(subdir:String):String
-    {
-        initAppDirectoryPath();
-		
-		if (appFilesDirectory == "")
-			appFilesDirectory = cameramic_setappfilesdirectory(subdir);
-		
-		return appFilesDirectory;
-    }
 
 	/**
 	 * Function to push the native camera
@@ -111,7 +101,7 @@ class CameraMic
     {
         if (cameramic_takephoto != null)
             return;
-
+		
         #if android
         cameramic_takephoto = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "takePhoto", "(Lorg/haxe/lime/HaxeObject;)V");
         #elseif ios
@@ -143,5 +133,24 @@ class CameraMic
         #elseif ios
         cameramic_playaudio = Lib.load ("cameramic", "cameramic_playaudio", 1);
         #end
+    }
+	
+	/**
+	 * GETTERS & SETTERS
+	 */
+    public static function get_appFilesDirectory():String
+	{
+		if (appFilesDirectory != "") return appFilesDirectory;
+		
+		return appFilesDirectory = "";
+	}
+	
+    public static function set_appFilesDirectory(subdir:String):String
+    {
+        initAppDirectoryPath();
+		
+		appFilesDirectory = cameramic_setappfilesdirectory(subdir);
+		
+		return appFilesDirectory;
     }
 }
