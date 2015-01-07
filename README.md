@@ -1,7 +1,7 @@
 CameraMic
 =========
 
-Camera &amp; Microphone OpenFL native extension
+Camera &amp; Microphone OpenFL native extension (for Android & iOS)
 
 Features:
  * Native camera view to take a photo.
@@ -13,7 +13,7 @@ There is not any error handling yet. I know this is no a perfect way to do it, b
 
 To try the project, you must set CameraMic haxelib with this command:
 
-> haxelib dev CameraMic path/to/CameraMic
+> haxelib git CameraMic https://github.com/josuigoa/CameraMic.git
 
 
 Android
