@@ -11,9 +11,10 @@ import flash.Lib;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFieldAutoSize;
-#if cpp
+#if mobile
 import sys.FileSystem;
 #end
+
 /**
  * ...
  * @author Josu Igoa
@@ -32,12 +33,10 @@ class Main extends Sprite
 	var _isRecording:Bool;
 	var _audioPath:String;
 	var _photoBmp:Bitmap;
-	/* ENTRY POINT */
 	
 	function resize(e) 
 	{
 		if (!inited) init();
-		// else (resize or orientation change)
 	}
 	
 	function init() 
@@ -45,7 +44,6 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		// (your code here)
 		CameraMic.appFilesDirectory = "/cameraMicTest";
 		
 		_bg = new Shape();
@@ -91,14 +89,8 @@ class Main extends Sprite
 		_recordingAlert.x = w - _recordingAlert.width * .5;
 		_recordingAlert.y = h - _recordingAlert.height * .5;
 		
-		// Stage:
-		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
-		
-		// Assets:
-		// nme.Assets.getBitmapData("img/assetname.jpg");
 		this.addChild(_cameraBtn);
 		this.addChild(_recBtn);
-		//this.addChild(_stopBtn);
 		this.addChild(_playBtn);
 	}
 	
@@ -109,9 +101,9 @@ class Main extends Sprite
 	
 	private function onRecClick(e:Event):Void 
 	{
-		//addChild(_bg);
+		addChild(_bg);
 		addChild(_recordingAlert);
-		#if cpp
+		#if mobile
 		CameraMic.startRecordingAudio(this, recordAudioCallback);
 		#end
 	}
@@ -131,8 +123,8 @@ class Main extends Sprite
 	
 	public function cameraPhotoCallback(photoPath:String, ?remove):Void
 	{
-        #if cpp
-         
+        #if mobile
+        
         //var input = BitmapData.loadFromBytes(flash.utils.ByteArray.readFile(photoPath));
         trace("HX: " + photoPath + " exists: " + FileSystem.exists(photoPath));
 		var input:BitmapData = BitmapData.load(photoPath);
@@ -163,7 +155,7 @@ class Main extends Sprite
 		#end
 	}
 
-	#if cpp
+	#if mobile
 	public function recordAudioCallback(audioPath:String, ?remove):Void
 	{
 		_audioPath = audioPath;

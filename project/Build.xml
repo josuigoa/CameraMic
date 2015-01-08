@@ -12,7 +12,6 @@
 		<compilerflag value="-Iinclude"/>
 		
 		<file name="common/ExternalInterface.cpp"/>
-		<file name="common/CameraMic.cpp"/>
 		
 	</files>
 	

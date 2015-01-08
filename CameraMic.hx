@@ -1,6 +1,6 @@
 package;
 
-#if cpp
+#if mobile
 import cpp.Lib;
 #elseif neko
 import neko.Lib;
@@ -147,9 +147,12 @@ class CameraMic
 	
     public static function set_appFilesDirectory(subdir:String):String
     {
+		#if mobile
         initAppDirectoryPath();
-		
 		appFilesDirectory = cameramic_setappfilesdirectory(subdir);
+		#elseif flash
+		appFilesDirectory = subdir;
+		#end
 		
 		return appFilesDirectory;
     }
