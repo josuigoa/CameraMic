@@ -24,6 +24,11 @@ iOS
 ---
 In the iOS version, the camera view pushes and takes the photo. Otherwise it seems it records audio correctly, but I can´t play it back, so I can't know if it is ok.
 
+TODO
+---
+ * Move the images from the camera roll instead of copying
+
+
 License
 ---
 This software is released under the MIT License
