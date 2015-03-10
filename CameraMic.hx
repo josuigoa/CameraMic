@@ -52,11 +52,11 @@ class CameraMic
 	 * @param	haxeObject Java will call the `recordAudioCallback` function in this object with the recorded audio path
 	 * @param	callbackHandler Objective-C will call this function with the recorded audio path
 	 */
-    public static function startRecordingAudio(haxeObject:Dynamic, callbackHandler:Dynamic->?Bool->Void):Void
+    public static function startRecordingAudio(haxeObject:Dynamic, callbackHandler:Dynamic->?Bool->Void, removeLastRecording:Bool = false):Void
     {
         initMic();
         #if android
-        cameramic_startrecordingaudio(haxeObject);
+        cameramic_startrecordingaudio(haxeObject, removeLastRecording);
         #elseif ios
         cameramic_startrecordingaudio(callbackHandler);
         #end
@@ -115,10 +115,10 @@ class CameraMic
             return;
 
         #if android
-        cameramic_startrecordingaudio = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "startRecordingAudio", "(Lorg/haxe/lime/HaxeObject;)V");
+        cameramic_startrecordingaudio = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "startRecordingAudio", "(Lorg/haxe/lime/HaxeObject;Z)V");
         cameramic_stoprecordingaudio = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "stopRecordingAudio", "()V");
         #elseif ios
-        cameramic_startrecordingaudio = Lib.load ("cameramic", "cameramic_startrecordingaudio", 1);
+        cameramic_startrecordingaudio = Lib.load ("cameramic", "cameramic_startrecordingaudio", 2);
         cameramic_stoprecordingaudio = Lib.load ("cameramic", "cameramic_stoprecordingaudio", 0);
         #end
     }

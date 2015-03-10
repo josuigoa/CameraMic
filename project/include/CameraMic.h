@@ -7,7 +7,7 @@ namespace cameramic
 
 	void TakePhoto();
 
-	void StartRecordingAudio();
+	void StartRecordingAudio(int removeLastRecording);
 
 	void StopRecordingAudio();
 

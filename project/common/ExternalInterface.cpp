@@ -33,12 +33,12 @@ static void cameramic_takephoto (value hxObject)
 }
 DEFINE_PRIM (cameramic_takephoto, 1);
 
-static void cameramic_startrecordingaudio (value hxObject)
+static void cameramic_startrecordingaudio (value hxObject,  value removelastrecording)
 {
 	handler = new AutoGCRoot(hxObject);
-	StartRecordingAudio();
+	StartRecordingAudio(val_get_bool(removelastrecording));
 }
-DEFINE_PRIM (cameramic_startrecordingaudio, 1);
+DEFINE_PRIM (cameramic_startrecordingaudio, 2);
 
 static void cameramic_stoprecordingaudio ()
 {

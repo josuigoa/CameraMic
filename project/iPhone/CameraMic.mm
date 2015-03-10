@@ -109,10 +109,21 @@ static NSString* _appFilesDirectory;
 	cameramic_filename_callback(ptr);
 }
 
--(id)initMicAndStartRecording
+-(id)initMicAndStartRecording:(int)removeLastRecording
 {
 	if (self = [super init])
 	{
+		if (removeLastRecording == 1 && [_audioPath length] != 0)
+		{
+			NSFileManager *fileManager = [NSFileManager defaultManager];
+
+			if ([fileManager fileExistsAtPath:_audioPath])
+			{ 
+				BOOL success = [fileManager removeItemAtPath:path error:&error];
+        		if (!success) NSLog(@"Error: %@", [error localizedDescription]);
+			}
+		}
+
 		//obtaining saving path
 	    NSNumber *myDoubleNumber = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSince1970]];
 	    NSString *filename = [NSString stringWithFormat:@"%d.caf", [myDoubleNumber integerValue]];
@@ -268,9 +279,9 @@ namespace cameramic
 		_cameraMic = [[CameraMic alloc] initCamera];
 	}
 
-	void StartRecordingAudio()
+	void StartRecordingAudio(int removeLastRecording)
 	{
-		_cameraMic = [[CameraMic alloc] initMicAndStartRecording];
+		_cameraMic = [[CameraMic alloc] initMicAndStartRecording:removeLastRecording];
 	}
 
 	void StopRecordingAudio()

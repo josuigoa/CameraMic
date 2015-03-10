@@ -52,7 +52,7 @@ public class CameraMic extends Extension
 	
 	private static final int CAMERA_PIC_REQUEST = 1337;
 	static private Uri imageUri;
-    static private String mFileName = null;
+    static private String mAudioFile = null;
     static private MediaRecorder mRecorder = null;
     static private MediaPlayer mPlayer = null;
 	static private HaxeObject haxeObject;
@@ -136,7 +136,7 @@ public class CameraMic extends Extension
 	}
 	
 
-	public static void startRecordingAudio(HaxeObject eventHaxeHandler)
+	public static void startRecordingAudio(HaxeObject eventHaxeHandler, boolean removeLastRecording)
     {
 		CameraMic.haxeObject = eventHaxeHandler;
 		
@@ -149,15 +149,27 @@ public class CameraMic extends Extension
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
 
-        mFileName = audioDirectory.getPath() + "/" + java.util.Calendar.getInstance().getTimeInMillis() + ".3gp";
+        if (removeLastRecording && mAudioFile != null)
+        {
+        	File audioFile = new File(Extension.mainContext , mAudioFile);
+			if (audioFile.exists())
+			{
+				if (audioFile.delete())
+					Log.i('CameraMic', '"' + mAudioFile + '" file correctly deleted.');
+				else
+					Log.i('CameraMic', 'Couldn\'t delete the file "mAudioFile"');
+			}
+		}
+
+        mAudioFile = audioDirectory.getPath() + "/" + java.util.Calendar.getInstance().getTimeInMillis() + ".3gp";
         
-        mRecorder.setOutputFile(mFileName);
+        mRecorder.setOutputFile(mAudioFile);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 		
         try {
             mRecorder.prepare();
         } catch (IOException e) {
-            Log.e("josu", "prepare() failed");
+            Log.e("CameraMic", "prepare() failed: " + e);
         }
 		
         mRecorder.start();
@@ -169,7 +181,7 @@ public class CameraMic extends Extension
         mRecorder.release();
         mRecorder = null;
 		
-		CameraMic.haxeObject.call1("recordAudioCallback", mFileName);
+		CameraMic.haxeObject.call1("recordAudioCallback", mAudioFile);
     }
 	
     public static void playAudio(String filePath)
@@ -181,7 +193,7 @@ public class CameraMic extends Extension
             mPlayer.prepare();
             mPlayer.start();
         } catch (IOException e) {
-            Log.e("josu", "prepare() failed");
+            Log.e("CameraMic", "prepare() failed: " + e);
         }
 	}
 	
