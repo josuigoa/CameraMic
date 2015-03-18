@@ -1,24 +1,43 @@
 package ;
 
-import flash.display.Bitmap;
-import flash.display.BitmapData;
-import flash.display.Shape;
-import flash.display.Sprite;
-import flash.events.Event;
-import flash.events.MouseEvent;
-import flash.geom.Matrix;
-import flash.Lib;
-import flash.text.TextField;
-import flash.text.TextFormat;
-import flash.text.TextFieldAutoSize;
-#if mobile
-import sys.FileSystem;
-#end
-
 /**
  * ...
  * @author Josu Igoa
  */
+
+import openfl.display.Sprite;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFieldAutoSize;
+import openfl.Lib;
+
+#if !mobile
+class Main extends Sprite
+{
+	public static function main() 
+	{
+		// static entry point
+		Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
+		Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
+		var w = Lib.current.stage.stageWidth * .5;
+		var h = Lib.current.stage.stageHeight * .5;
+		var txt = new TextField();
+		txt.autoSize = TextFieldAutoSize.LEFT;
+		txt.defaultTextFormat = new TextFormat(null, 20, 0);
+		txt.text = "This library only works on mobile";
+		txt.x = (w - txt.width) * .5;
+		txt.y = (h - txt.height) * .5;
+		Lib.current.addChild(txt);
+	}
+}
+#else
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.display.Shape;
+import openfl.events.Event;
+import openfl.events.MouseEvent;
+import openfl.geom.Matrix;
+import sys.FileSystem;
 
 class Main extends Sprite 
 {
@@ -44,7 +63,7 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		CameraMic.appFilesDirectory = "/cameraMicTest";
+		CameraMic.appFilesDirectory = "/.cameraMicTest";
 		
 		_bg = new Shape();
 		_bg.graphics.beginFill(0, .7);
@@ -123,9 +142,13 @@ class Main extends Sprite
 	
 	public function cameraPhotoCallback(photoPath:String, ?remove):Void
 	{
-        #if mobile
-        
-        //var input = BitmapData.loadFromBytes(flash.utils.ByteArray.readFile(photoPath));
+        //var input = BitmapData.loadFromBytes(openfl.utils.ByteArray.readFile(photoPath));
+		if (photoPath == null)
+		{
+			trace("HX: photo cancelled");
+			return;
+		}
+		
         trace("HX: " + photoPath + " exists: " + FileSystem.exists(photoPath));
 		var input:BitmapData = BitmapData.load(photoPath);
 		
@@ -150,12 +173,8 @@ class Main extends Sprite
 			_photoBmp.y = photoY;
 			addChild(_photoBmp);
 		}
-		#else
-		trace("photoPath: " + photoPath);
-		#end
 	}
 
-	#if mobile
 	public function recordAudioCallback(audioPath:String, ?remove):Void
 	{
 		_audioPath = audioPath;
@@ -174,7 +193,6 @@ class Main extends Sprite
 				_playBtn.removeEventListener(Btn.CLICK, onPlayClick);
 		}
 	}
-	#end
 	/* SETUP */
 
 	public function new() 
@@ -197,8 +215,9 @@ class Main extends Sprite
 	public static function main() 
 	{
 		// static entry point
-		Lib.current.stage.align = flash.display.StageAlign.TOP_LEFT;
-		Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
+		Lib.current.stage.align = openfl.display.StageAlign.TOP_LEFT;
+		Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
 		Lib.current.addChild(new Main());
 	}
 }
+#end

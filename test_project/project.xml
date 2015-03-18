@@ -16,7 +16,7 @@
 	<source path="src" />
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
-	<haxelib name="CameraMic" />
+	<haxelib name="CameraMic" if="mobile" />
 	
 	<!-- assets -->
 	<icon path="assets/openfl.svg" />

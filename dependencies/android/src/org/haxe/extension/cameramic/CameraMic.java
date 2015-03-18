@@ -58,6 +58,7 @@ public class CameraMic extends Extension
 	static private HaxeObject haxeObject;
 	static private boolean isRegistered;
 	static private String appFilesDirectory = "";
+	
 	private static String getAppDirectory()
 	{
 		if(appFilesDirectory == "")
@@ -126,10 +127,17 @@ public class CameraMic extends Extension
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 		
-		if (resultCode == Activity.RESULT_OK && requestCode == CAMERA_PIC_REQUEST)
+		if (requestCode == CAMERA_PIC_REQUEST)
 		{
 			Log.i("josu", "IrudiPath, path: " + imageUri.getPath());
-			CameraMic.haxeObject.call1("cameraPhotoCallback", imageUri.getPath());
+			if (resultCode == Activity.RESULT_OK)
+			{
+				CameraMic.haxeObject.call1("cameraPhotoCallback", imageUri.getPath());
+			}
+			else
+			{
+				CameraMic.haxeObject.call1("cameraPhotoCallback", null);
+			}
 		}
 		
 		return true;
@@ -143,7 +151,6 @@ public class CameraMic extends Extension
 		File audioDirectory = new File(CameraMic.getAppDirectory() + "/audios/");
 		// have the object build the directory structure, if needed.
 		audioDirectory.mkdirs();
-
         
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -151,13 +158,13 @@ public class CameraMic extends Extension
 
         if (removeLastRecording && mAudioFile != null)
         {
-        	File audioFile = new File(Extension.mainContext , mAudioFile);
+        	File audioFile = new File(mAudioFile);
 			if (audioFile.exists())
 			{
 				if (audioFile.delete())
-					Log.i('CameraMic', '"' + mAudioFile + '" file correctly deleted.');
+					Log.i("CameraMic", "\"mAudioFile\" file correctly deleted.");
 				else
-					Log.i('CameraMic', 'Couldn\'t delete the file "mAudioFile"');
+					Log.i("CameraMic", "Couldn\'t delete the file \"mAudioFile\"");
 			}
 		}
 
