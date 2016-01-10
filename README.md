@@ -15,6 +15,11 @@ To try the project, you must set CameraMic haxelib with this command:
 
 > haxelib git CameraMic https://github.com/josuigoa/CameraMic.git
 
+Installation
+------------
+Install the repository code using `haxelib git`:
+
+`haxelib git https://github.com/josuigoa/CameraMic`
 
 Android
 -------
