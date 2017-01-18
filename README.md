@@ -17,6 +17,11 @@ Install the repository code using `haxelib git`:
 
 `haxelib git CameraMic https://github.com/josuigoa/CameraMic.git`
 
+Installation
+------------
+Install the repository code using `haxelib git`:
+
+`haxelib git https://github.com/josuigoa/CameraMic`
 
 Android
 -------
