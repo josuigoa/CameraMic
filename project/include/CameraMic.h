@@ -12,6 +12,8 @@ namespace cameramic
 	void StopRecordingAudio();
 
 	void PlayAudio(const char* audioPath);
+	
+	void StopAudio();
 }
 
 #endif

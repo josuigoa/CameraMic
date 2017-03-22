@@ -201,6 +201,12 @@ static NSString* _appFilesDirectory;
    }
 }
 
+-(void)stopAudio
+{
+	[_audioPlayer stop];
+	[_audioPlayer release];
+}
+
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [_audioPlayer release];
@@ -292,6 +298,17 @@ namespace cameramic
 	void PlayAudio(const char* audioPath)
 	{
 		printf("%s\n", audioPath);
-		[_cameraMic playAudio:[NSString stringWithUTF8String:audioPath]];
+		if (_cameraMic)
+		{
+			[_cameraMic playAudio:[NSString stringWithUTF8String:audioPath]];
+		}
+	}
+
+	void StopAudio()
+	{
+		if (_cameraMic)
+		{
+			[_cameraMic stopAudio];
+		}
 	}
 }

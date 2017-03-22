@@ -26,6 +26,7 @@ class CameraMic
     private static var cameramic_startrecordingaudio : Dynamic;
 	private static var cameramic_stoprecordingaudio : Dynamic;
 	private static var cameramic_playaudio : Dynamic;
+	private static var cameramic_stopaudio : Dynamic;
 
 	/**
 	 * Function to push the native camera
@@ -84,6 +85,14 @@ class CameraMic
         cameramic_playaudio(filePath);
         #end
 	}
+	
+    public static function stopAudio():Void
+	{
+        initPlayer();
+        #if mobile
+        cameramic_stopaudio();
+        #end
+	}
 
     private static function initAppDirectoryPath()
     {
@@ -125,13 +134,15 @@ class CameraMic
 	
     private static function initPlayer()
     {
-        if (cameramic_playaudio != null)
+        if (cameramic_playaudio != null && cameramic_stopaudio != null)
             return;
 
         #if android
         cameramic_playaudio = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "playAudio", "(Ljava/lang/String;)V");
+        cameramic_stopaudio = JNI.createStaticMethod("org.haxe.extension.cameramic.CameraMic", "stopAudio", "()V");
         #elseif ios
         cameramic_playaudio = Lib.load ("cameramic", "cameramic_playaudio", 1);
+        cameramic_stopaudio = Lib.load ("cameramic", "cameramic_stopaudio", 0);
         #end
     }
 	

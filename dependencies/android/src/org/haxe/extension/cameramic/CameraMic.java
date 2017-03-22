@@ -206,6 +206,7 @@ public class CameraMic extends Extension
 	
     public static void stopAudio()
 	{
+		mPlayer.stop();
 		mPlayer.release();
         mPlayer = null;
 	}

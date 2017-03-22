@@ -52,6 +52,12 @@ static void cameramic_playaudio (value inputValue)
 }
 DEFINE_PRIM (cameramic_playaudio, 1);
 
+static void cameramic_stopaudio ()
+{
+	StopAudio();
+}
+DEFINE_PRIM (cameramic_stopaudio, 0);
+
 
 extern "C"
 {
