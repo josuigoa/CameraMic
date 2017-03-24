@@ -184,11 +184,13 @@ public class CameraMic extends Extension
 
     public static void stopRecordingAudio()
     {
+	if (mRecorder == null) return;
+	
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
 		
-		CameraMic.haxeObject.call1("recordAudioCallback", mAudioFile);
+	CameraMic.haxeObject.call1("recordAudioCallback", mAudioFile);
     }
 	
     public static void playAudio(String filePath)
@@ -206,6 +208,8 @@ public class CameraMic extends Extension
 	
     public static void stopAudio()
 	{
+		if (mPlayer == null) return;
+		
 		mPlayer.stop();
 		mPlayer.release();
         mPlayer = null;
